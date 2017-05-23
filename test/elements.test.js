@@ -6,8 +6,15 @@ describe('getElements', () => {
   test('returns empty array by default', () => {
     expect(getElements())
       .toEqual([]);
-    expect(getElements(false))
-      .toEqual([]);
+  });
+
+  test('throws on invalid param', () => {
+    expect(() => {
+      getElements(false);
+    }).toThrow();
+    expect(() => {
+      getElements(5);
+    }).toThrow();
   });
 
   test('handles selector strings', () => {

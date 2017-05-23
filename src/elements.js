@@ -3,6 +3,13 @@ const collectionTypes = [
   NodeList
 ];
 
+/**
+ * Converts various types of collections of nodes to an
+ * array of nodes for use within registries.
+ *
+ * Accepts an array, HTMLCollection, NodeList, Node, or
+ * a jQuery object.
+ */
 const toElementArray = (obj) => {
   if (Array.isArray(obj))
     return obj;
@@ -10,15 +17,21 @@ const toElementArray = (obj) => {
     return [...obj];
   if (obj.nodeType)
     return [obj];
-  return obj.get();
+  if (typeof obj.get === 'function')
+    return obj.get();
+
+  throw new TypeError(
+    'Expected an Array, HTMLCollection, NodeList, Node, or jQuery object.'
+  );
 };
 
-export const getElements = (el) => {
-  if (!el)
-    return [];
-  return toElementArray(
+/**
+ * Wraps toElementArray, allowing string selectors and
+ * providing a default empty array.
+ */
+export const getElements = (el = []) =>
+  toElementArray(
     typeof el === 'string'
       ? document.querySelectorAll(el)
       : el
   );
-};
