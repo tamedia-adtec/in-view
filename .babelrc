@@ -4,5 +4,14 @@
       "targets": { "ie": 9 },
       "modules": false
     }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": { "ie": 9 }
+        }]
+      ]
+    }
+  }
 }
