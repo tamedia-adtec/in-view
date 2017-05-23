@@ -13,7 +13,7 @@ const toElementArray = (obj) => {
   return obj.get();
 };
 
-const getElements = (el) => {
+export const getElements = (el) => {
   if (!el)
     return [];
   return toElementArray(
@@ -22,5 +22,3 @@ const getElements = (el) => {
       : el
   );
 };
-
-export default getElements;

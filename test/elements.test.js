@@ -1,4 +1,4 @@
-import getElements from '../src/dom';
+import { getElements } from '../src/elements';
 import jQuery from 'jquery';
 
 describe('getElements', () => {
