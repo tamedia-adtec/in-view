@@ -7,7 +7,9 @@ const stubRect = {
   top: 25,
   right: 100,
   bottom: 75,
-  left: 50
+  left: 50,
+  width: 10,
+  height: 10
 };
 
 describe('inViewport', () => {
@@ -28,7 +30,7 @@ describe('inViewport', () => {
     );
     const fail = inViewport(
       stubRect,
-      { width: 90, height: 200 }
+      { width: 200, height: 64 }
     );
     expect(pass).toBe(true);
     expect(fail).toBe(false);
