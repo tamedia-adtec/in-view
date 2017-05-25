@@ -1,4 +1,7 @@
-import { inViewport } from '../src/viewport';
+import {
+  inViewport,
+  getContext
+} from '../src/viewport';
 
 const stubRect = {
   top: 25,
@@ -29,6 +32,16 @@ describe('inViewport', () => {
     );
     expect(pass).toBe(true);
     expect(fail).toBe(false);
+  });
+
+});
+
+describe('getContext', () => {
+
+  test('returns a context object', () => {
+    const keys = Object.keys(getContext());
+    expect(keys).toContain('width');
+    expect(keys).toContain('height');
   });
 
 });
