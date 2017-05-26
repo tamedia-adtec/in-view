@@ -2,7 +2,7 @@ import { getElements } from './elements';
 import { inViewport, getContext } from './viewport';
 import { defaults } from './options';
 
-export default class Registry {
+export default class Register {
   constructor(elements, options) {
     this.elements = getElements(elements);
     this.mapCache = this.elements.map(el => false);

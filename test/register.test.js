@@ -1,49 +1,49 @@
-import Registry from '../src/registry';
+import Register from '../src/register';
 import { defaults } from '../src/options';
 
-describe('Registry', () => {
+describe('Register', () => {
 
   test('has elements, mapCache, and options', () => {
-    const keys = Object.keys(new Registry(document.body));
+    const keys = Object.keys(new Register(document.body));
     expect(keys).toContain('elements');
     expect(keys).toContain('mapCache');
     expect(keys).toContain('options');
   });
 
   test('receives default options', () => {
-    const reg = new Registry('.selector');
+    const reg = new Register('.selector');
     expect(reg.options).toEqual(defaults);
   });
 
   test('creates initial mapCache', () => {
-    const reg = new Registry('.selector');
+    const reg = new Register('.selector');
     expect(reg.mapCache)
       .toBeInstanceOf(Array);
   });
 
 });
 
-describe('Registry.update', () => {
+describe('Register.update', () => {
 
   test('writes mapCache', () => {
-    const reg = new Registry(document.body);
+    const reg = new Register(document.body);
     expect(reg.mapCache).toEqual([false]);
     reg.update();
     expect(reg.mapCache).toEqual([true]);
   });
 
-  test('returns Registry', () => {
-    const reg = new Registry(document.body);
+  test('returns Register', () => {
+    const reg = new Register(document.body);
     expect(reg.update())
       .toBe(reg);
   });
 
 });
 
-describe('Registry.on', () => {
+describe('Register.on', () => {
 
   test('adds handlers', () => {
-    const reg = new Registry(document.body);
+    const reg = new Register(document.body);
     expect(reg.handlers.enter)
       .toHaveLength(0);
     expect(reg.handlers.exit)
@@ -57,14 +57,14 @@ describe('Registry.on', () => {
   });
 
   test('throws on unsupported event', () => {
-    const reg = new Registry(document.body);
+    const reg = new Register(document.body);
     expect(() => {
       reg.on('foo', () => {});
     }).toThrow();
   });
 
   test('returns a function that removes handler', () => {
-    const reg = new Registry(document.body);
+    const reg = new Register(document.body);
     const handler = () => {};
     const remove = reg.on('enter', handler);
     expect(reg.handlers.enter)
@@ -76,11 +76,11 @@ describe('Registry.on', () => {
 
 });
 
-describe('Registry.report', () => {
+describe('Register.report', () => {
 
   test('calls appropriate handlers', () => {
     const el = document.body;
-    const reg = new Registry(el);
+    const reg = new Register(el);
     const enterHandler = jest.fn();
     const exitHandler = jest.fn();
 
@@ -103,10 +103,10 @@ describe('Registry.report', () => {
 
 });
 
-describe('Registry.getMap', () => {
+describe('Register.getMap', () => {
 
   test('returns a new Array of element length', () => {
-    const arr = new Registry(document.body).getMap();
+    const arr = new Register(document.body).getMap();
     expect(arr).toBeInstanceOf(Array);
     expect(arr).toHaveLength(1);
   });
