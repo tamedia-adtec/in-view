@@ -51,6 +51,42 @@ describe('Registry.update', () => {
 
 });
 
+describe('Registry.on', () => {
+
+  test('adds handlers', () => {
+    const reg = new Registry(document.body);
+    expect(reg.handlers.enter)
+      .toHaveLength(0);
+    expect(reg.handlers.exit)
+      .toHaveLength(0);
+    reg.on('enter', () => {});
+    reg.on('exit', () => {});
+    expect(reg.handlers.enter)
+      .toHaveLength(1);
+    expect(reg.handlers.exit)
+      .toHaveLength(1);
+  });
+
+  test('throws on unsupported event', () => {
+    const reg = new Registry(document.body);
+    expect(() => {
+      reg.on('foo', () => {});
+    }).toThrow();
+  });
+
+  test('returns a function that removes handler', () => {
+    const reg = new Registry(document.body);
+    const handler = () => {};
+    const remove = reg.on('enter', handler);
+    expect(reg.handlers.enter)
+      .toContain(handler);
+    remove();
+    expect(reg.handlers.enter)
+      .not.toContain(handler);
+  });
+
+});
+
 describe('Registry.getMap', () => {
 
   test('returns a new Array of element length', () => {
