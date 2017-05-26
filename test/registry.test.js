@@ -10,17 +10,6 @@ describe('Registry', () => {
     expect(keys).toContain('options');
   });
 
-  test('has update, report, getMap', () => {
-    const {
-      update,
-      report,
-      getMap
-    } = Registry.prototype;
-    expect(update).toBeInstanceOf(Function);
-    expect(report).toBeInstanceOf(Function);
-    expect(getMap).toBeInstanceOf(Function);
-  });
-
   test('receives default options', () => {
     const reg = new Registry('.selector');
     expect(reg.options).toEqual(defaults);
