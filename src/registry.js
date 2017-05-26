@@ -28,7 +28,9 @@ export default class Registry {
   }
 
   report(element, entered, exited) {
-    // Call appropriate handlers...
+    const type = entered ? 'enter' : exited ? 'exit' : null;
+    if (type)
+      this.handlers[type].forEach(fn => fn(element));
   }
 
   on(event, fn) {
