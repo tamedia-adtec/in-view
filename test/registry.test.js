@@ -87,6 +87,33 @@ describe('Registry.on', () => {
 
 });
 
+describe('Registry.report', () => {
+
+  test('calls appropriate handlers', () => {
+    const el = document.body;
+    const reg = new Registry(el);
+    const enterHandler = jest.fn();
+    const exitHandler = jest.fn();
+
+    reg.on('enter', enterHandler);
+    reg.on('exit', exitHandler);
+
+    expect(enterHandler)
+      .not.toHaveBeenCalled();
+
+    reg.report(el, true, false);
+    expect(enterHandler)
+      .toHaveBeenCalledWith(el);
+    expect(exitHandler)
+      .not.toHaveBeenCalled();
+
+    reg.report(el, false, true);
+    expect(exitHandler)
+      .toHaveBeenCalledWith(el);
+  });
+
+});
+
 describe('Registry.getMap', () => {
 
   test('returns a new Array of element length', () => {
