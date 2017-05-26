@@ -16,7 +16,7 @@
     "build": "yarn run build:umd && yarn run build:umd:min",
     "build:umd": "rollup -c",
     "build:umd:min": "NODE_ENV=production rollup -c",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
