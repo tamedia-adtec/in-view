@@ -18,6 +18,17 @@ triggers.forEach(event =>
   })
 );
 
+if (MutationObserver) {
+  addEventListener('DOMContentLoaded', () => {
+    new MutationObserver(check)
+      .observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+  });
+}
+
 function inView(elements, options) {
   const register = new Register(elements, options);
   registry.push(register);
