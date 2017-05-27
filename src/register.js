@@ -41,7 +41,9 @@ export default class Register {
     this.handlers[event].push(fn);
     return () => {
       const index = this.handlers[event].indexOf(fn);
-      this.handlers[event].splice(index, 1);
+      if (index > -1) {
+        this.handlers[event].splice(index, 1);
+      }
     };
   }
 
