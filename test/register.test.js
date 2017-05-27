@@ -74,6 +74,21 @@ describe('Register.on', () => {
       .not.toContain(handler);
   });
 
+  test('returns a function that removes only handler', () => {
+    const reg = new Register(document.body);
+    const handlers = reg.handlers.enter;
+    const fn = () => {};
+    const remove = reg.on('enter', fn);
+    reg.on('enter', () => {});
+    expect(handlers).toHaveLength(2);
+    expect(handlers).toContain(fn);
+    remove();
+    expect(handlers).toHaveLength(1);
+    expect(handlers).not.toContain(fn);
+    remove();
+    expect(handlers).toHaveLength(1);
+  });
+
 });
 
 describe('Register.report', () => {
