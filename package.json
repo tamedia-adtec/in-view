@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/in-view.js",
   "module": "dist/in-view.module.js",
+  "browser": "dist/in-view.min.js",
   "author": "Cam Wiegert <cam@camwiegert.com>",
   "repository": "camwiegert/in-view",
   "homepage": "https://camwiegert.github.io/in-view",
