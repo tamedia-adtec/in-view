@@ -2,21 +2,35 @@ import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 
+const info = require('./package');
+
 const config = {
   entry: 'src/in-view.js',
-  dest: 'dist/in-view.js',
-  moduleName: 'inView',
-  format: 'umd',
   plugins: [
     resolve(),
     babel({
       exclude: 'node_modules/**'
     })
+  ],
+  targets: [
+    {
+      dest: info.main,
+      format: 'umd',
+      moduleName: 'inView'
+    },
+    {
+      dest: info.module,
+      format: 'es'
+    }
   ]
 };
 
 if (process.env.NODE_ENV === 'production') {
-  config.dest = 'dist/in-view.min.js';
+  config.targets = [{
+    dest: 'dist/in-view.min.js',
+    format: 'umd',
+    moduleName: 'inView'
+  }];
   config.plugins.push(
     uglify()
   );

@@ -2,13 +2,12 @@
   "name": "in-view",
   "version": "1.0.0",
   "main": "dist/in-view.js",
-  "module": "src/in-view.js",
+  "module": "dist/in-view.module.js",
   "author": "Cam Wiegert <cam@camwiegert.com>",
   "repository": "camwiegert/in-view",
   "homepage": "https://camwiegert.github.io/in-view",
   "license": "MIT",
   "files": [
-    "src",
     "dist"
   ],
   "scripts": {
