@@ -3,6 +3,10 @@ const collectionTypes = [
   NodeList
 ];
 
+function toArray(collection) {
+  return Array.prototype.slice.call(collection);
+}
+
 /**
  * Converts various types of collections of nodes to an
  * array of nodes for use within registries.
@@ -14,7 +18,7 @@ const toElementArray = (obj) => {
   if (Array.isArray(obj))
     return obj;
   if (collectionTypes.some(type => obj instanceof type))
-    return [...obj];
+    return toArray(obj);
   if (obj.nodeType)
     return [obj];
   if (typeof obj.get === 'function')
