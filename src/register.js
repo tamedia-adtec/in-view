@@ -34,10 +34,6 @@ export default class Register {
   }
 
   on(event, fn) {
-    if (event !== 'enter' && event !== 'exit')
-      throw new Error(
-        'Unsupported event type. Expected "enter" or "exit".'
-      );
     this.handlers[event].push(fn);
     return () => {
       const index = this.handlers[event].indexOf(fn);

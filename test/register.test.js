@@ -56,13 +56,6 @@ describe('Register.on', () => {
       .toHaveLength(1);
   });
 
-  test('throws on unsupported event', () => {
-    const reg = new Register(document.body);
-    expect(() => {
-      reg.on('foo', () => {});
-    }).toThrow();
-  });
-
   test('returns a function that removes handler', () => {
     const reg = new Register(document.body);
     const handler = () => {};
