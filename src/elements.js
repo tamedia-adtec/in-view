@@ -14,7 +14,7 @@ function toArray(collection) {
  * Accepts an array, HTMLCollection, NodeList, Node, or
  * a jQuery object.
  */
-const toElementArray = (obj) => {
+function toElementArray(obj) {
   if (Array.isArray(obj))
     return obj;
   if (collectionTypes.some(type => obj instanceof type))
@@ -27,7 +27,7 @@ const toElementArray = (obj) => {
   throw new TypeError(
     'Expected an Array, HTMLCollection, NodeList, Node, or jQuery object.'
   );
-};
+}
 
 /**
  * Wraps toElementArray, allowing string selectors and
