@@ -8,13 +8,23 @@ const triggers = [
   'load'
 ];
 
+let checking = false;
+
+function requestFrame(fn) {
+  if (!checking) {
+    requestAnimationFrame(fn);
+    checking = true;
+  }
+}
+
 const check = throttle(() => {
   registry.forEach(register => register.update())
+  checking = false;
 }, 100);
 
 triggers.forEach(event =>
   addEventListener(event, () => {
-    requestAnimationFrame(check);
+    requestFrame(check);
   })
 );
 
