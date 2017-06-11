@@ -7,10 +7,7 @@ export default class Register {
     this.elements = getElements(elements);
     this.mapCache = this.elements.map(el => false);
     this.handlers = { enter: [], exit: [] };
-    this.options = {
-      ...defaults,
-      ...options
-    };
+    this.setOptions(options);
   }
 
   update() {
@@ -50,5 +47,16 @@ export default class Register {
         getContext()
       );
     }, this);
+  }
+
+  setOptions(options = {}) {
+    const prev = this.options || defaults;
+    const next = {};
+    for (let key in prev) {
+      next[key] = options[key] !== undefined
+        ? options[key]
+        : prev[key];
+    }
+    this.options = next;
   }
 }
