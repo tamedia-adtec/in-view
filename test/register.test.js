@@ -120,3 +120,24 @@ describe('Register.getMap', () => {
   });
 
 });
+
+describe('Register.setOptions', () => {
+
+  test('overwrites existing options', () => {
+    const reg = new Register(document.body);
+    reg.setOptions({ threshold: 50 });
+    expect(reg.options.threshold).toBe(50);
+    expect(reg.options.test).toBe(defaults.test);
+  });
+
+  test('only writes to existing keys', () => {
+    const reg = new Register(document.body);
+    reg.setOptions({
+      threshold: 25,
+      foo: 'bar'
+    });
+    expect(reg.options.threshold).toBe(25);
+    expect(reg.options.foo).toBeUndefined();
+  });
+
+});
