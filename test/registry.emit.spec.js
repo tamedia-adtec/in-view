@@ -1,5 +1,5 @@
 import test from 'ava';
-import Registry from '../src/registry';
+import { Registry } from '../src/registry';
 
 test('Registry.emit calls each handler', t => {
 
@@ -19,6 +19,18 @@ test('Registry.emit calls each handler', t => {
 
     registry.emit('enter', 'a');
     registry.emit('exit', 'b');
+
+});
+
+test('Registry.emit passes the selector', t => {
+
+    let registry = Registry([], {}, '.foo');
+
+    registry.on('enter', (x, selector) => {
+        t.true(selector === '.foo');
+    });
+
+    registry.emit('enter', 'a');
 
 });
 

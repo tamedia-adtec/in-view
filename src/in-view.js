@@ -1,6 +1,5 @@
-import Registry from './registry';
-import { inViewport } from './viewport';
-import { throttle } from 'lodash';
+import { Registry, defaults } from './registry';
+import { isEqual, throttle } from 'lodash';
 
 /**
 * Create and return the inView function.
@@ -21,10 +20,19 @@ const inView = () => {
 
     /**
     * Maintain a hashmap of all registries, a history
-    * of selectors to enumerate, and an options object.
+    * of selectors to enumerate
     */
     let selectors = { history: [] };
-    let options   = { offset: {}, threshold: 0, test: inViewport };
+
+    /**
+     * Store count of nodes per node type
+     */
+    let nodeCounter = 0;
+
+    /**
+     * Store count of duplicated selectors
+     */
+    let selectorCounter = {};
 
     /**
     * Check each registry from selector history,
@@ -58,69 +66,76 @@ const inView = () => {
     * The main interface. Take a selector and retrieve
     * the associated registry or create a new one.
     */
-    let control = (selector) => {
+    let control = (selector, opts) => {
 
-        if (typeof selector !== 'string') return;
+        let elements;
 
-        // Get an up-to-date list of elements.
-        let elements = [].slice.call(document.querySelectorAll(selector));
+        if (typeof selector === 'string') {
+            // Get an up-to-date list of elements.
+            elements = [].slice.call(document.querySelectorAll(selector));
+        } else {
+            if (selector instanceof window.Node) {
+                elements = [selector];
+            } else if (selector instanceof window.NodeList || selector instanceof Array) {
+                elements = [].slice.call(selector);
+            } else {
+                // selector is not supported
+                return;
+            }
+            // create unique selector
+            selector = 'Node-'+nodeCounter++;
+        }
 
         // If the registry exists, update the elements.
         if (selectors.history.indexOf(selector) > -1) {
-            selectors[selector].elements = elements;
+            // get selector
+            let sel = selectors[selector];
+            // validate new options
+            let o = sel.validate(opts);
+            // check that the options have not changed
+            if (isEqual(o, sel.options)) {
+                if (selector.substr(0,4) === 'Node') {
+                    sel.elements.concat(elements);
+                } else {
+                    sel.elements = elements;
+                }
+
+                return sel;
+            } else {
+                // if options have changed, modify selector and add it as new
+                // based on the selector
+                let count = selectorCounter[selector] = ~~selectorCounter[selector]+1;
+                selector += '-'+count;
+            }
         }
 
         // If it doesn't exist, create a new registry.
-        else {
-            selectors[selector] = Registry(elements, options);
-            selectors.history.push(selector);
-        }
+        selectors[selector] = Registry(elements, opts, selector);
+
+        selectors.history.push(selector);
 
         return selectors[selector];
     };
 
     /**
-    * Mutate the offset object with either an object
-    * or a number.
-    */
-    control.offset = o => {
-        if (o === undefined) return options.offset;
-        const isNum = n => typeof n === 'number';
-        ['top', 'right', 'bottom', 'left']
-            .forEach(isNum(o) ?
-                dim => options.offset[dim] = o :
-                dim => isNum(o[dim]) ? options.offset[dim] = o[dim] : null
-            );
-        return options.offset;
-    };
+     * Attempts to get a registry from the selectors object
+     */
+    control.get = s => {
+        return selectors[s];
+    }
 
     /**
-    * Set the threshold with a number.
-    */
-    control.threshold = n => {
-        return typeof n === 'number' && n >= 0 && n <= 1
-            ? options.threshold = n
-            : options.threshold;
-    };
-
-    /**
-    * Use a custom test, overriding inViewport, to
-    * determine element visibility.
-    */
-    control.test = fn => {
-        return typeof fn === 'function'
-            ? options.test = fn
-            : options.test;
-    };
+     * Add proxy to global check
+     */
+    control.check = () => check();
 
     /**
     * Add proxy for test function, set defaults,
     * and return the interface.
     */
-    control.is = el => options.test(el, options);
-    control.offset(0);
-    return control;
+    control.is = el => defaults.test(el, defaults);
 
+    return control;
 };
 
 // Export a singleton.
