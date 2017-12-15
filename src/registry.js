@@ -69,12 +69,23 @@ class inViewRegistry {
     }
 
     /**
-    * Deregister all handlers for an event
+    * Unregister a handler for an event
+    * If no handler is provided, Unregister all handlers
     */
-    off(event) {
-        this.handlers[event] = [];
-        this.singles[event] = [];
-        this.singlesEach[event] = [];
+    off(event, handler) {
+        if (typeof handler === 'undefined') {
+            this.handlers[event] = [];
+            this.singles[event] = [];
+            this.singlesEach[event] = [];
+        }
+        else {
+            ['handlers', 'singles', 'singlesEach'].forEach(key => {
+                let handlerIndex = this[key][event].indexOf(handler);
+                if (handlerIndex !== -1) {
+                    this[key][event].splice(handlerIndex, 1);
+                }
+            });
+        }
         return this;
     }
 

@@ -23,6 +23,13 @@ Additional API:
 > inView('.someSelector').onceEach('enter', doSomething);
 > ```
 
+### inView(\<selector>|\<Node>|\<NodeList>).off(\<event>, \<handler?>)
+> Unregister a handler (or all handler if not specified) for a given  `event`.
+
+> ```js
+> inView('.someSelector').off('enter', handlerToUnregister);
+> ```
+
 Remove lodash dependency:
 * _.isEqual replaced by [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal)
 * _.merge replaced by [extend](https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/)
