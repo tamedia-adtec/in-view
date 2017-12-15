@@ -1,10 +1,11 @@
 const webpack = require('webpack'),
+      path    = require('path'),
       package = require('./package');
 
 const banner = `${package.name} ${package.version} - ${package.description}\nCopyright (c) ${ new Date().getFullYear() } ${package.author} - ${package.homepage}\nLicense: ${package.license}`;
 
 module.exports = {
-    'context': __dirname + '/src',
+    'context': path.join(__dirname, '/src'),
     'entry': './index.js',
     'output': {
         'path': __dirname + '/dist',
