@@ -1,5 +1,5 @@
 import test from 'ava';
-import { merge } from 'lodash';
+import { extend } from '../src/utils';
 import { Registry, defaults } from '../src/registry';
 
 const registry = Registry([]);
@@ -9,7 +9,7 @@ test('registry.validate returns defaults for non objects', t => {
 });
 
 test('registry.validate merges properties', t => {
-    let output = merge({}, defaults, {
+    let output = extend(true,  defaults, {
         threshold: 0.6
     });
     t.deepEqual(registry.validate({

@@ -1,5 +1,5 @@
 import { Registry, defaults } from './registry';
-import { isEqual, throttle } from 'lodash';
+import { isDeepEqual, throttle } from './utils';
 
 /**
 * Create and return the inView function.
@@ -38,11 +38,11 @@ const inView = () => {
     * Check each registry from selector history,
     * throttled to interval.
     */
-    const check = throttle(() => {
+    const check = throttle(interval, () => {
         selectors.history.forEach(selector => {
             selectors[selector].check();
         });
-    }, interval);
+    });
 
     /**
     * For each trigger event on window, add a listener
@@ -93,7 +93,7 @@ const inView = () => {
             // validate new options
             let o = sel.validate(opts);
             // check that the options have not changed
-            if (isEqual(o, sel.options)) {
+            if (isDeepEqual(o, sel.options)) {
                 if (selector.substr(0,4) === 'Node' || selector === id) {
                     sel.elements.concat(elements);
                 } else {

@@ -1,5 +1,5 @@
 import { inViewport } from './viewport';
-import { merge } from 'lodash';
+import { extend } from './utils';
 
 /**
 * - Registry -
@@ -105,7 +105,7 @@ class inViewRegistry {
     */
     validate(o) {
         // create local copy of defaults
-        let options = merge({}, defaults);
+        let options = extend(true, defaults);
         // if parameter is not an object, return
         if (typeof o !== 'object') return options;
         // validate options

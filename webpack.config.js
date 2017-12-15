@@ -1,5 +1,4 @@
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin'),
-      webpack = require('webpack'),
+const webpack = require('webpack'),
       package = require('./package');
 
 const banner = `${package.name} ${package.version} - ${package.description}\nCopyright (c) ${ new Date().getFullYear() } ${package.author} - ${package.homepage}\nLicense: ${package.license}`;
@@ -21,7 +20,6 @@ module.exports = {
         }]
     },
     'plugins': [
-        new webpack.BannerPlugin(banner),
-        new LodashModuleReplacementPlugin
+        new webpack.BannerPlugin(banner)
     ]
 };

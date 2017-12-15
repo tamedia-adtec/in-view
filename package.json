@@ -27,9 +27,6 @@
     "babel": "inherit"
   },
   "babel": {
-    "plugins": [
-      "lodash"
-    ],
     "presets": [
       "es2015"
     ]
@@ -52,17 +49,12 @@
     "ava": "^0.16.0",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
-    "babel-plugin-lodash": "^3.2.8",
     "babel-preset-es2015": "^6.14.0",
     "babel-register": "^6.11.6",
     "eslint": "^3.3.1",
     "http-server": "^0.9.0",
     "jsdom": "^9.4.2",
-    "lodash-webpack-plugin": "^0.10.0",
     "node-sass": "^3.8.0",
     "webpack": "^1.13.2"
-  },
-  "dependencies": {
-    "lodash": "^4.15.0"
   }
 }
