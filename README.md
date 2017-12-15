@@ -10,6 +10,16 @@ Get notified when a DOM element enters or exits the viewport. A small (~1.9kb gz
 ![in-view.js](https://camwiegert.github.io/in-view/lib/images/in-view.png)
 
 ---
+## Fork from [in-view (Hearst-Hatchery)](https://github.com/Hearst-Hatchery/in-view)
+
+Last update: 2017-12-15
+
+Remove lodash dependency:
+* _.isEqual replaced by [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal)
+* _.merge replaced by [extend](https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/)
+* _.throttle replaced by [throttle-debounce](https://github.com/niksy/throttle-debounce)
+
+---
 
 ## Installation
 
@@ -37,16 +47,16 @@ inView('.someSelector')
 
 ## API
 
-in-view maintains a separate handler registry for each set of elements captured with `inView(<selector>)`. Each registry exposes the same four methods. in-view also exposes four top-level methods. (`is`, `offset`, `threshold`, `test`).
+in-view maintains a separate handler registry for each set of elements captured with `inView(<selector>)`. Each registry exposes the same four methods. in-view also exposes four top-level methods. (`is`, `test`). See bellow for available options.
 
-### inView(\<selector>).on(\<event>, \<handler>)
+### inView(\<selector>|\<Node>|\<NodeList>, \<options?>, \<id?>).on(\<event>, \<handler>)
 > Register a handler to the elements selected by `selector` for `event`. The only events in-view emits are `'enter'` and `'exit'`.
 
 > ```js
 > inView('.someSelector').on('enter', doSomething);
 > ```
 
-### inView(\<selector>).once(\<event>, \<handler>)
+### inView(\<selector>|\<Node>|\<NodeList>).once(\<event>, \<handler>)
 > Register a handler to the elements selected by `selector` for `event`. Handlers registered with `once` will only be called once.
 
 > ```js
@@ -59,33 +69,6 @@ in-view maintains a separate handler registry for each set of elements captured 
 > ```js
 > inView.is(document.querySelector('.someSelector'));
 > // => true
-> ```
-
-### inView.offset(\<offset>)
-> By default, in-view considers something in viewport if it breaks any edge of the viewport. This can be used to set an offset from that edge. For example, an offset of `100` will consider elements in viewport if they break any edge of the viewport by at least `100` pixels. `offset` can be a positive or negative integer.
-
-> ```js
-> inView.offset(100);
-> inView.offset(-50);
-> ```
-
-> Offset can also be set per-direction by passing an object.
-
-> ```js
-> inView.offset({
->     top: 100,
->     right: 75,
->     bottom: 50,
->     left: 25
-> });
-> ```
-
-### inView.threshold(\<threshold>)
-> Set the ratio of an element's height **and** width that needs to be visible for it to be considered in viewport. This defaults to `0`, meaning any amount. A threshold of `0.5` or `1` will require that half or all, respectively, of an element's height and width need to be visible. `threshold` must be a number between `0` and `1`.
-> ```js
-> inView.threshold(0);
-> inView.threshold(0.5);
-> inView.threshold(1);
 > ```
 
 ### inView.test(\<test>)
@@ -110,6 +93,34 @@ in-view maintains a separate handler registry for each set of elements captured 
 > inView('.someSelector').emit('exit', document.querySelectorAll('.someSelector')[0]);
 > ```
 
+### Options
+
+
+#### offset
+> By default, in-view considers something in viewport if it breaks any edge of the viewport. This can be used to set an offset from that edge. For example, an offset of `100` will consider elements in viewport if they break any edge of the viewport by at least `100` pixels. `offset` can be a positive or negative integer.
+
+> ```js
+> inView('.someSelector', { offset: 100 });
+> ```
+
+> Offset can also be set per-direction by passing an object.
+
+> ```js
+> inView('.someSelector', {
+>    offset: {
+>     top: 100,
+>     right: 75,
+>     bottom: 50,
+>     left: 25
+>   }
+> });
+> ```
+
+#### threshold
+> Set the ratio of an element's height **and** width that needs to be visible for it to be considered in viewport. This defaults to `0`, meaning any amount. A threshold of `0.5` or `1` will require that half or all, respectively, of an element's height and width need to be visible. `threshold` must be a number between `0` and `1`.
+> ```js
+> inView('.someSelector', { threshold: 0.5 });
+> ```
 ---
 
 ## Browser Support
