@@ -21,6 +21,7 @@ test('Registry returns a registry', t => {
         current: [],
         elements: [document.body],
         handlers: { enter: [], exit: [] },
-        singles: { enter: [], exit: [] }
+        singles: { enter: [], exit: [] },
+        singlesEach: { enter: [], exit: [] }
     });
 });

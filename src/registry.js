@@ -30,6 +30,7 @@ class inViewRegistry {
         this.current  = [];
         this.handlers = { enter: [], exit: [] };
         this.singles  = { enter: [], exit: [] };
+        this.singlesEach = { enter: [], exit: [] };
     }
 
     /**
@@ -73,6 +74,7 @@ class inViewRegistry {
     off(event) {
         this.handlers[event] = [];
         this.singles[event] = [];
+        this.singlesEach[event] = [];
         return this;
     }
 
@@ -86,14 +88,39 @@ class inViewRegistry {
     }
 
     /**
+    * Register a handler for event, to be fired
+    * once for each element and removed.
+    */
+    onceEach(event, handler) {
+        handler.triggeredOn = []; // This array stores elements on which the handler has already been executed
+        this.singlesEach[event].push(handler);
+        return this;
+    }
+
+    /**
     * Emit event on given element. Used mostly
     * internally, but could be useful for users.
     */
     emit(event, element) {
+        // Handlers executed only once
         while(this.singles[event].length) {
             this.singles[event].pop()(element, this.selector);
         }
-        let length = this.handlers[event].length;
+
+        // Handlers executed only once but on each element
+        let length = this.singlesEach[event].length;
+        while (--length > -1) {
+            if (this.singlesEach[event][length].triggeredOn.indexOf(element) === -1) {
+                this.singlesEach[event][length](element, this.selector);
+                this.singlesEach[event][length].triggeredOn.push(element);
+            }
+            // Remove the handler when it has been executed on each element
+            if (this.singlesEach[event][length].triggeredOn.length === this.elements.length) {
+                this.singlesEach[event].splice(length, 1);
+            }
+        }
+
+        length = this.handlers[event].length;
         while (--length > -1) {
             this.handlers[event][length](element, this.selector);
         }

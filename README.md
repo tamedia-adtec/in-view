@@ -14,6 +14,15 @@ Get notified when a DOM element enters or exits the viewport. A small (~1.9kb gz
 
 Last update: 2017-12-15
 
+Additional API:
+
+### inView(\<selector>|\<Node>|\<NodeList>).onceEach(\<event>, \<handler>)
+> Register a handler to the elements selected by `selector` for `event`. Handlers registered with `once` will only be called once for each element.
+
+> ```js
+> inView('.someSelector').onceEach('enter', doSomething);
+> ```
+
 Remove lodash dependency:
 * _.isEqual replaced by [fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal)
 * _.merge replaced by [extend](https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/)
