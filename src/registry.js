@@ -162,26 +162,26 @@ class inViewRegistry {
     * or a number.
     */
     offset(o) {
-        let offset = this.options.offset;
-        if (o === undefined) return offset;
+        let _offset = this.options.offset;
+        if (o === undefined) return _offset;
         const isNum = n => typeof n === 'number';
         ['top', 'right', 'bottom', 'left']
             .forEach(isNum(o) ?
-                dim => offset[dim] = o :
-                dim => isNum(o[dim]) ? offset[dim] = o[dim] : null
+                dim => _offset[dim] = o :
+                dim => isNum(o[dim]) ? _offset[dim] = o[dim] : null
             );
-        return offset;
+        return _offset;
     }
 
     /**
     * Set the threshold with a number.
     */
     threshold(n) {
-        let threshold = this.options.threshold;
+        let _threshold = this.options.threshold;
         typeof n === 'number' && n >= 0 && n <= 1
-            ? threshold = n
-            : threshold;
-        return threshold;
+            ? _threshold = n
+            : _threshold;
+        return _threshold;
     }
 
     /**
@@ -189,11 +189,11 @@ class inViewRegistry {
     * determine element visibility.
     */
     test(fn) {
-        let test = this.options.test;
+        let _test = this.options.test;
         typeof fn === 'function'
-            ? test = fn
-            : test;
-        return test;
+            ? _test = fn
+            : _test;
+        return _test;
     }
 }
 
