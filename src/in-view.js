@@ -1,5 +1,5 @@
 import { Registry, defaults } from './registry';
-import { isDeepEqual, throttle } from './utils';
+import { isDeepEqual, throttle, isIntersectionObserverSupported } from './utils';
 
 /**
 * Create and return the inView function.
@@ -44,22 +44,25 @@ const inView = () => {
         });
     });
 
-    /**
-    * For each trigger event on window, add a listener
-    * which checks each registry.
-    */
-    triggers.forEach(event =>
-        addEventListener(event, check));
+    if (!isIntersectionObserverSupported) {
+        /**
+        * For each trigger event on window, add a listener
+        * which checks each registry.
+        */
+        triggers.forEach(event =>
+            addEventListener(event, check));
 
-    /**
-    * If supported, use MutationObserver to watch the
-    * DOM and run checks on mutation.
-    */
-    if (window.MutationObserver) {
-        addEventListener('DOMContentLoaded', () => {
-            new MutationObserver(check)
-                .observe(document.body, { attributes: true, childList: true, subtree: true });
-        });
+        /**
+        * If supported, use MutationObserver to watch the
+        * DOM and run checks on mutation.
+        * This is only necessary if IntersectionObservers are not supported.
+        */
+        if (window.MutationObserver) {
+            addEventListener('DOMContentLoaded', () => {
+                new MutationObserver(check)
+                    .observe(document.body, { attributes: true, childList: true, subtree: true });
+            });
+        }
     }
 
     /**
@@ -99,6 +102,7 @@ const inView = () => {
                 } else {
                     sel.elements = elements;
                 }
+                sel.observer && sel._updateObserver();
 
                 return sel;
             } else {

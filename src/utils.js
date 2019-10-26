@@ -160,4 +160,7 @@ const throttle = function(delay, noTrailing, callback, debounceMode) {
 	return wrapper;
 };
 
-export { extend, isDeepEqual, throttle };
+// Intersection observers are not supported on IE (https://caniuse.com/#feat=intersectionobserver)
+const isIntersectionObserverSupported = window.IntersectionObserver !== undefined;
+
+export { extend, isDeepEqual, throttle, isIntersectionObserverSupported };

@@ -1,5 +1,5 @@
 import { inViewport } from './viewport';
-import { extend } from './utils';
+import { extend, isIntersectionObserverSupported } from './utils';
 
 /**
 * - Registry -
@@ -31,6 +31,48 @@ class inViewRegistry {
         this.handlers = { enter: [], exit: [] };
         this.singles  = { enter: [], exit: [] };
         this.singlesEach = { enter: [], exit: [] };
+
+        if (isIntersectionObserverSupported) {
+            this.observer = this._createObserver();
+        }
+    }
+
+    _createObserver() {
+        const observer = new IntersectionObserver(this._onIntersection.bind(this), {
+            rootMargin: `${-1 * this.options.offset.top}px ${-1 * this.options.offset.right}px ${-1 * this.options.offset.bottom}px ${-1 * this.options.offset.left}px`,
+            threshold: this.options.threshold
+        });
+        this.elements.forEach(el => observer.observe(el));
+        return observer;
+    }
+
+    _updateObserver() {
+        this.observer.disconnect();
+        this.observer = this._createObserver();
+    }
+
+    _updateElementState(el, passes) {
+        let index   = this.current.indexOf(el);
+        let current = index > -1;
+        let entered = passes && !current;
+        let exited  = !passes && current;
+
+        if (entered) {
+            this.current.push(el);
+            this.emit('enter', el);
+        }
+
+        if (exited) {
+            this.current.splice(index, 1);
+            this.emit('exit', el);
+        }
+    }
+
+    _onIntersection(entries) {
+        entries.forEach(entry => {
+            const passes = entry.isIntersecting && entry.intersectionRatio >= this.options.threshold;
+            this._updateElementState(entry.target, passes);
+        });
     }
 
     /**
@@ -39,22 +81,8 @@ class inViewRegistry {
     */
     check() {
         this.elements.forEach(el => {
-            let passes  = this.options.test(el, this.options);
-            let index   = this.current.indexOf(el);
-            let current = index > -1;
-            let entered = passes && !current;
-            let exited  = !passes && current;
-
-            if (entered) {
-                this.current.push(el);
-                this.emit('enter', el);
-            }
-
-            if (exited) {
-                this.current.splice(index, 1);
-                this.emit('exit', el);
-            }
-
+            const passes = this.options.test(el, this.options);
+            this._updateElementState(el, passes);
         });
         return this;
     }

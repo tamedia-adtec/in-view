@@ -12,7 +12,9 @@ Get notified when a DOM element enters or exits the viewport. A small (~1.9kb gz
 ---
 ## Fork from [in-view (Hearst-Hatchery)](https://github.com/Hearst-Hatchery/in-view)
 
-Last update: 2017-12-15
+Last update: 2019-10-26
+
+Add Intersection Observer API support. If the browser do not support it, fall back to polling mode.
 
 Additional API:
 
@@ -89,6 +91,8 @@ in-view maintains a separate handler registry for each set of elements captured 
 
 ### inView.test(\<test>)
 > Override in-view's default visibility criteria with a custom function. This function will receive the element and the options object as its only two arguments. Return `true` when an element should be considered visible and `false` otherwise.
+> Currently not supported when IntersectionObserver API is used.
+
 > ```js
 > inView.test((el, options) => {
 >     // ...
