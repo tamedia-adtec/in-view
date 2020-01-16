@@ -22,7 +22,7 @@ export function wait(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-// Put the bottom of the viewport to the top of the box (+ offset)
-export function scrollToBox(box, offset) {
-  window.scroll(0, parseInt(box.style.top) - window.innerHeight + offset);
+// Put the bottom of the viewport (or the top with "topViewport" option) to the top of the box (+ offset)
+export function scrollToBox(box, offset, topViewport = false) {
+  window.scroll(0, parseInt(box.style.top) - (topViewport ? 0 : window.innerHeight) + offset);
 }

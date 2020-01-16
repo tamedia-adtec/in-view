@@ -218,3 +218,26 @@ describe('in-view', function() {
     done();
   });
 });
+
+describe('in-view.is', function() {
+  afterEach(() => {
+    // Remove all boxes
+    const boxes = document.querySelectorAll('.__box');
+    for (const b of boxes) {
+      b.parentNode.removeChild(b);
+    }
+    window.scrollTo(0, 0);
+  });
+
+  it('should detect an element in the viewport', async () => {
+    const boxVisible = createBox({ height: 100, left: 0 }); // only a 50% of the box is visible
+    const boxNotVisible = createBox({ top: 3000, left: 800 }); // box outside viewport
+
+    scrollToBox(boxVisible, 50, true);
+    await wait(100);
+
+    expect(inView.is(boxVisible)).toBeTrue();
+    expect(inView.is(boxNotVisible)).toBeFalse();
+    expect(inView.is(boxVisible, { threshold: 0.8 })).toBeFalse();
+  });
+});

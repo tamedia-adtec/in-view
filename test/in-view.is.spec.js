@@ -1,6 +1,5 @@
 import test from 'ava';
 import inView from '../src/in-view';
-import { inViewport } from '../src/viewport';
 
 const stub = {
     getBoundingClientRect() {
@@ -18,4 +17,8 @@ const stub = {
 test('inView.is returns a boolean', t => {
     t.true(typeof inView.is(stub) === 'boolean');
     t.true(inView.is(stub));
+});
+
+test('inView.is supports custom options', t => {
+    t.false(inView.is(stub, { offset: { top: 100 }}));
 });

@@ -1,5 +1,5 @@
 import { Registry, defaults } from './registry';
-import { isDeepEqual, throttle, isIntersectionObserverSupported } from './utils';
+import { isDeepEqual, throttle, isIntersectionObserverSupported, extend } from './utils';
 
 /**
 * Create and return the inView function.
@@ -137,7 +137,7 @@ const inView = () => {
     * Add proxy for test function, set defaults,
     * and return the interface.
     */
-    control.is = el => defaults.test(el, defaults);
+    control.is = (el, opts = defaults) => defaults.test(el, extend(true, {}, defaults, opts));
 
     return control;
 };

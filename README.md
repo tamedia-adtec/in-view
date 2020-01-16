@@ -81,12 +81,19 @@ in-view maintains a separate handler registry for each set of elements captured 
 > inView('.someSelector').once('enter', doSomething);
 > ```
 
-### inView.is(\<element>)
+### inView.is(\<element>, \<options?>)
 > Check if `element` is in the viewport.
 
 > ```js
 > inView.is(document.querySelector('.someSelector'));
-> // => true
+> // => boolean
+> ```
+
+> Custom `offset` or `threshold` options can be specified.
+
+> ```js
+> inView.is(document.querySelector('.someSelector'), { threshold: 0.4 });
+> // => boolean
 > ```
 
 ### inView.test(\<test>)
