@@ -1,9 +1,9 @@
 {
   "name": "in-view",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Get notified when a DOM element enters or exits the viewport.",
   "repository": "https://github.com/camwiegert/in-view",
-  "main": "dist/in-view.min.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production webpack -wp",
     "build": "cross-env NODE_ENV=production webpack",
