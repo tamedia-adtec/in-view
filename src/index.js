@@ -1,2 +1,2 @@
 import inView from './in-view.js';
-module.exports = inView;
+export default inView;
